@@ -1,2 +1,8 @@
 # Ignoring virtual environment
 venv/
+
+# db configs
+config.py
+
+# __pycache__
+__pycache__/
