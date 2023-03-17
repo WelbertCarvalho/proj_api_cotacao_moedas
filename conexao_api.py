@@ -1,9 +1,9 @@
 import requests
 import json
 
-class Data_api_extractor:
+class Extrator_dados_api:
     def __init__(self):
-        print("Instance of extractor object\n")
+        print("Instância do objeto de extração\n")
 
     def get_json_data(self, url):
         r = requests.get(url)
@@ -12,7 +12,7 @@ class Data_api_extractor:
     
 
 
-cotacao_usd_brl = Data_api_extractor()
+cotacao_usd_brl = Extrator_dados_api()
 
 retorno = cotacao_usd_brl.get_json_data("https://economia.awesomeapi.com.br/last/USD-BRL")
 
