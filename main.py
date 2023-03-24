@@ -9,14 +9,18 @@ print(retorno)
 df = cotacao_usd_brl.cria_df_usando_dict(retorno)
 print(df)
 
-datalake_con = Conexao()
-datalake = datalake_con.sqlalchemy_conn(
+datalake = Conexao()
+datalake_con = datalake.conexao_sqlalchemy(
     'datalake',
     'mysql+pymysql'
 )
 
-print(datalake)
+print(datalake_con)
 
+datalake.criar_tabela(
+    df = df,
+    nome_tabela = 'cotacao_usd_brl',
+    conexao = datalake_con,
+    modo = 'append'
+)
 
-# Criar lógica para create table com base nos dados do dataframe caso a tabela não exista
-# Nesta mesma lógica, caso a tabela exista, criar mecanismo que impeça a entrada de dados duplicados com base no campo create_date
