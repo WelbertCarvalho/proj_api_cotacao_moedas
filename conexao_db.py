@@ -1,8 +1,11 @@
+import sys
+sys.path.append("/home/welbert/projetos/airflow")
+
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 import pandas as pd
 from typing import Literal
-from config import conexoes as c
+from pipelines.proj_api_cotacao_moedas.config import connections as c
 
 class Conexao:
     def __init__(self):
@@ -38,3 +41,16 @@ class Conexao:
         )
 
         print(f'A tabela {nome_tabela} foi criada no modo {modo}')
+
+
+if __name__ == '__main__':
+    print(c["datalake"])
+    datalake = Conexao()
+    datalake_con = datalake.conexao_sqlalchemy(
+    'datalake',
+    'mysql+pymysql'
+    )
+    
+    print(datalake_con)
+
+    
