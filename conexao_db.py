@@ -27,25 +27,8 @@ class Conexao:
         print(f'Conexão estabelecida: {nome_database}')
         return con
     
-    def criar_tabela(
-            self, df: pd.DataFrame, 
-            nome_tabela: str, 
-            conexao: Engine, 
-            modo: Literal['fail', 'replace', 'append'] = 'append') -> None:
-        
-        df.to_sql(
-            name = nome_tabela,
-            con = conexao,
-            if_exists = modo,
-            index = False
-        )
-
-        print(f'A tabela {nome_tabela} foi criada no modo {modo}')
-
 
 if __name__ == '__main__':
-    from pipelines.proj_api_cotacao_moedas.extracao_api import Extrator_dados_api
-    print(c["datalake"])
     datalake = Conexao()
     datalake_con = datalake.conexao_sqlalchemy(
     'datalake',
@@ -53,13 +36,4 @@ if __name__ == '__main__':
     )
     
     print(datalake_con)
-
-    e = Extrator_dados_api()
-
-    retorno_json_lista = e.captura_dados_json('https://economia.awesomeapi.com.br/last/USD-BRL')
-    df = e.cria_df_usando_dict(retorno_json_lista)
-
-    print(df.head())
-    print(df.shape)
-    print(df.info())
     
