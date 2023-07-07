@@ -20,11 +20,6 @@ def dados_cotacao_diaria(origem: str, destino: str) -> None:
 
     print(datalake_con)
 
-    datalake.criar_tabela(
-        df = df,
-        nome_tabela = 'cotacao_usd_brl',
-        conexao = datalake_con,
-        modo = 'append'
-    )
+
 
 
