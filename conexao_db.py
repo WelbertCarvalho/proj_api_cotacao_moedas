@@ -1,10 +1,7 @@
+from sqlalchemy import create_engine
+
 import sys
 sys.path.append("/home/welbert/projetos/airflow")
-
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
-import pandas as pd
-from typing import Literal
 from pipelines.proj_api_cotacao_moedas.config import connections as c
 
 class Conexao:
@@ -36,4 +33,6 @@ if __name__ == '__main__':
     )
     
     print(datalake_con)
+
+
     
