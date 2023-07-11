@@ -35,7 +35,6 @@ class Extrator_dados:
         conexao.close()
         return df
 
-
 if __name__ == '__main__':
     datalake = Conexao()
     datalake_con = datalake.conexao_sqlalchemy(
