@@ -1,4 +1,3 @@
-from pathlib import Path
 import requests
 import json
 import pandas as pd
@@ -17,22 +16,21 @@ class Extrator_dados:
         dados_json = json.loads(r.text)
         return dados_json
     
-    def cria_df_usando_dict(self, dict_json: dict) -> pd.DataFrame:
-        df = pd.DataFrame(dict_json)
-        return df
-    
-    def lendo_conteudo_sql(self, nome_arquivo_sql: str) -> str:
-        dir_atual = Path().absolute()
-        dir_sql = f"{dir_atual}/sql"
-        arquivo_sql = open(f'{dir_sql}/{nome_arquivo_sql}.sql', 'r')
+    @staticmethod
+    def lendo_conteudo_sql(caminho_do_arquivo: str, nome_arquivo_sql: str) -> str:
+        arquivo_sql = open(f'{caminho_do_arquivo}/{nome_arquivo_sql}.sql', 'r')
         conteudo_sql = arquivo_sql.read()
         arquivo_sql.close()
         return conteudo_sql
     
     def cria_df_lendo_sql_sem_param(self, nome_arquivo_sql: str, conexao: Conexao.conexao_sqlalchemy) -> pd.DataFrame:
-        conteudo_sql = self._lendo_conteudo_sql(nome_arquivo_sql)
+        conteudo_sql = self.lendo_conteudo_sql(nome_arquivo_sql)
         df = pd.read_sql_query(conteudo_sql, conexao)
         conexao.close()
+        return df
+
+    def cria_df_usando_dict(self, dict_json: dict) -> pd.DataFrame:
+        df = pd.DataFrame(dict_json)
         return df
 
 if __name__ == '__main__':

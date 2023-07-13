@@ -20,6 +20,8 @@ class Conexao:
         con = create_engine(
             url = url
         )
+
+        con = con.raw_connection()
         
         print(f'Conexão estabelecida: {nome_database}')
         return con

@@ -10,4 +10,4 @@ insert into datalake.cotacao_usd_brl (
     ask, 
     create_date, 
     created_at)
-values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
+values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, CURRENT_TIMESTAMP());
