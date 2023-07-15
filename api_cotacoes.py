@@ -1,15 +1,18 @@
 import sys
 sys.path.append("/home/welbert/projetos/airflow")
 
+import datetime as dt
+
 from pipelines.proj_api_cotacao_moedas.extracao import Extrator_dados
 from pipelines.proj_api_cotacao_moedas.conexao_db import Conexao
 from pipelines.proj_api_cotacao_moedas.carregamento import Carreg_dados
 
 
-def extrai_cotacao_diaria(origem: str, destino: str) -> None:
-    cotacao_usd_brl = Extrator_dados()
-    retorno = cotacao_usd_brl.captura_dados_json(f'https://economia.awesomeapi.com.br/last/{origem}-{destino}')
+def extrai_cotacao_diaria(url: str, origem: str, destino: str) -> None:
+    cotacao = Extrator_dados()
+    retorno = cotacao.captura_dados_json(url = url)
     campos = ['code', 'codein', 'name', 'high', 'low', 'varBid', 'pctChange', 'bid', 'ask', 'create_date']
+    # Retorna uma lista filtrando os valores com base nas chaves existentes na lista campos
     retorno_filtrado = list({chave: valor for chave, valor in retorno[f"{origem}{destino}"].items() if chave in campos}.values())
     retorno_convertido = []
 
@@ -38,6 +41,57 @@ def extrai_cotacao_diaria(origem: str, destino: str) -> None:
     return None
 
 
+def extrai_cotacao_periodo(url: str, periodo: int) -> None:
+    cotacao = Extrator_dados()
+    retorno = cotacao.captura_dados_json(url = f"{url}/{periodo}")
+    campos_convert_float = ['high', 'low', 'varBid', 'pctChange', 'bid', 'ask']
+    dict_dados_base = {'code': '', 'codein': '', 'name': ''}
+    dict_iter = {}
+    lista_dados_completos = []
+    for index, valor in enumerate(retorno):
+        if index == 0:
+            dict_dados_base['code'] = valor['code']
+            dict_dados_base['codein'] = valor['codein']
+            dict_dados_base['name'] = valor['name']
+            dict_iter = {**dict_dados_base, **valor}
+            
+            for campo in campos_convert_float:
+                dict_iter[campo] = float(dict_iter[campo])
+            
+            lista_dados_completos.append(dict_iter)
+        else:
+            dict_iter = {**dict_dados_base, **dict_iter}
+            dict_iter = {**dict_dados_base, **valor}
+            dict_iter['create_date'] = dt.datetime.fromtimestamp(int(valor['timestamp'])).strftime('%Y-%m-%d %H:%M:%S')
+
+            for campo in campos_convert_float:
+                dict_iter[campo] = float(dict_iter[campo])
+
+            lista_dados_completos.append(dict_iter)
+
+    for i in lista_dados_completos: 
+        print(i)
+
+    datalake = Conexao()
+    datalake_con = datalake.conexao_sqlalchemy(
+        'datalake',
+        'mysql+pymysql'
+    )
+    print(datalake_con)
+
+    Carreg_dados.insere_dados(
+        caminho_do_arquivo = "/home/welbert/projetos/airflow/pipelines/proj_api_cotacao_moedas/sql",
+        nome_arquivo_sql = 'insert_dados_cotacao_diaria',
+        dados_a_inserir = retorno_convertido,
+        conexao = datalake_con
+        )
+
+
+
+    return None
+
+
 if __name__ == '__main__':
-    captura = extrai_cotacao_diaria(origem = 'USD', destino = 'BRL')
+    captura = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/USD-BRL', origem = 'USD', destino = 'BRL')
+    # captura = extrai_cotacao_periodo(url = 'https://economia.awesomeapi.com.br/json/daily/USD-BRL', periodo = '15')
 
