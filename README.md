@@ -21,8 +21,9 @@ Esta classe contém métodos que realizam a extração de dados via API e també
 ### Carregamento (carregamento.py)
 Nesta classe, há um método para realizar a inserção de dados realizando a leitura de um script sql e tendo também uma conexão SQLAlchemy.
 
-### Instanciamento dos métodos das classes do projeto (api_cotacoes.py)
+### Instanciando os métodos das classes do projeto (api_cotacoes.py)
 Este é o script que contém os objetos instanciados e o exemplo de API para realizar a extração além de o carregamento dos dados em um banco MySQL de exemplo.
+São 2 funções que são chamadas pelas DAGs do airflow com o objetivo de inserir os dados na tabela do banco. Uma das funções carrega os dados do dia e a outra carrega os dados de um período a contar do dia de hoje passando um número de dias retroativos.
 
 ### Requirements (requirements.txt - com bibliotecas para instalação do Airflow)
 Este é o arquivo padrão gerado pelo comando pip freeze. Este arquivo deve ser utilizado para que realizar a instação de todas as bibliotecas necessárias para a utilização do projeto.
