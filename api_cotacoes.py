@@ -91,6 +91,6 @@ def extrai_cotacao_num_dias(url: str, num_dias: int) -> None:
 
 
 if __name__ == '__main__':
-    # captura = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/USD-BRL', origem = 'USD', destino = 'BRL')
-    captura = extrai_cotacao_num_dias(url = 'https://economia.awesomeapi.com.br/json/daily/USD-BRL', num_dias = '1000')
+    captura = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/USD-BRL', origem = 'USD', destino = 'BRL')
+    # captura = extrai_cotacao_num_dias(url = 'https://economia.awesomeapi.com.br/json/daily/USD-BRL', num_dias = '1000')
 
