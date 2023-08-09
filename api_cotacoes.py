@@ -8,7 +8,7 @@ from pipelines.proj_api_cotacao_moedas.conexao_db import Conexao
 from pipelines.proj_api_cotacao_moedas.carregamento import Carreg_dados
 
 
-def extrai_cotacao_diaria(url: str, origem: str, destino: str) -> None:
+def extrai_cotacao_diaria(url: str, origem: str, destino: str, nome_sql_arq: str) -> None:
     cotacao = Extrator_dados()
     retorno = cotacao.captura_dados_json(url = url)
     campos = ['code', 'codein', 'name', 'high', 'low', 'varBid', 'pctChange', 'bid', 'ask', 'create_date']
@@ -33,7 +33,7 @@ def extrai_cotacao_diaria(url: str, origem: str, destino: str) -> None:
 
     Carreg_dados.insere_dados(
         caminho_do_arquivo = "/home/welbert/projetos/airflow/pipelines/proj_api_cotacao_moedas/sql",
-        nome_arquivo_sql = 'insert_dados_cotacao_diaria',
+        nome_arquivo_sql = nome_sql_arq,
         dados_a_inserir = retorno_convertido,
         conexao = datalake_con
         )
@@ -41,7 +41,7 @@ def extrai_cotacao_diaria(url: str, origem: str, destino: str) -> None:
     return None
 
 
-def extrai_cotacao_num_dias(url: str, num_dias: int) -> None:
+def extrai_cotacao_num_dias(url: str, num_dias: int, nome_sql_arq: str) -> None:
     cotacao = Extrator_dados()
     retorno = cotacao.captura_dados_json(url = f"{url}/{num_dias}")
     campos_convert_float = ['high', 'low', 'varBid', 'pctChange', 'bid', 'ask']
@@ -82,7 +82,7 @@ def extrai_cotacao_num_dias(url: str, num_dias: int) -> None:
 
         Carreg_dados.insere_dados(
             caminho_do_arquivo = "/home/welbert/projetos/airflow/pipelines/proj_api_cotacao_moedas/sql",
-            nome_arquivo_sql = 'insert_dados_cotacao_diaria',
+            nome_arquivo_sql = nome_sql_arq,
             dados_a_inserir = dados_a_inserir,
             conexao = datalake_con
             )
@@ -91,6 +91,6 @@ def extrai_cotacao_num_dias(url: str, num_dias: int) -> None:
 
 
 if __name__ == '__main__':
-    captura = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/USD-BRL', origem = 'USD', destino = 'BRL')
-    # captura = extrai_cotacao_num_dias(url = 'https://economia.awesomeapi.com.br/json/daily/USD-BRL', num_dias = '1000')
+    # captura_btc = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/BTC-BRL', origem = 'BTC', destino = 'BRL', nome_sql_arq = 'insert_dados_cotacao_diaria_btc')
+    captura_btc = extrai_cotacao_num_dias(url = 'https://economia.awesomeapi.com.br/json/daily/BTC-BRL', num_dias = '1000', nome_sql_arq = 'insert_dados_cotacao_diaria_btc')
 
