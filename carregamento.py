@@ -20,6 +20,7 @@ class Carreg_dados():
             conexao.commit()
         except:
             print('Erro de carregamento de dados.')
+            print(dados_a_inserir)
 
         cursor.close()
         conexao.close()
