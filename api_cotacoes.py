@@ -89,7 +89,6 @@ def extrai_cotacao_num_dias(url: str, num_dias: int, nome_sql_arq: str) -> None:
 
     return None
 
-
 if __name__ == '__main__':
     # captura_btc = extrai_cotacao_diaria(url = 'https://economia.awesomeapi.com.br/last/BTC-BRL', origem = 'BTC', destino = 'BRL', nome_sql_arq = 'insert_dados_cotacao_diaria_btc')
     captura_btc = extrai_cotacao_num_dias(url = 'https://economia.awesomeapi.com.br/json/daily/BTC-BRL', num_dias = '10', nome_sql_arq = 'insert_dados_cotacao_diaria_btc')
