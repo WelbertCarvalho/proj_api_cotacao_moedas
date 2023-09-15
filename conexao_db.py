@@ -16,11 +16,7 @@ class Conexao:
         database = c[nome_database]['database']
 
         url = f'{tipo_conexao}://{user}:{password}@{host}:{port}/{database}'
-
-        con = create_engine(
-            url = url
-        )
-
+        con = create_engine(url = url)
         con = con.raw_connection()
         
         print(f'Conexão estabelecida: {nome_database}')

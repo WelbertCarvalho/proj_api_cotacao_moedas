@@ -49,3 +49,4 @@ if __name__ == '__main__':
     df = extrator.cria_df_usando_dict(dict_cot_diaria)
 
     print(df.head())
+    
